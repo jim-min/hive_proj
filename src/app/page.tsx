@@ -44,7 +44,7 @@ export default function Home() {
         </div>
         {/* Dashboard Cards */}
         <div className="grid grid-cols-3 gap-6 mb-8">
-          <DashboardCard icon="💵" title="질문 등록" subtitle="Earning" value="37.8%" valueDesc="발언자 수 증가" valueColor="text-green-500" />
+          <DashboardCard icon="💵" title="질문 등록" subtitle="Earning" value="37.8%" valueDesc="응답자 수 증가" valueColor="text-green-500" />
           <DashboardCard icon="🧑‍💻" title="결과 보기" subtitle="Balance" value="250명" valueDesc="조사 완료" valueColor="text-red-500" />
           <DashboardCard icon="🛍️" title="내 정보" subtitle="Total Sales" value="11%" valueDesc="this week" valueColor="text-green-500" />
         </div>
@@ -55,25 +55,25 @@ export default function Home() {
             <h2 className="text-2xl font-bold mb-2">지금 가장 인기있는 설문 조사?</h2>
             <p className="text-gray-500 mb-4">홍대생이 뽑은 맛집 순위</p>
             {/* Chart Placeholder */}
-            <div className="flex flex-col items-center mb-4">
-              <svg width="120" height="120" className="mb-2">
+            <div className="flex items-center mb-4 gap-8">
+              <svg width="120" height="120">
                 <circle cx="60" cy="60" r="54" fill="#f3f3f3" />
                 <path d="M60 6 a54 54 0 1 1 -38.18 92.18" fill="none" stroke="#e97ad9" strokeWidth="12" />
-                <text x="50%" y="54%" textAnchor="middle" fontSize="28" fontWeight="bold" fill="#171717">65%</text>
-                <text x="50%" y="67%" textAnchor="middle" fontSize="12" fill="#888">Total New\nCustomers</text>
+                <text x="50%" y="58%" textAnchor="middle" fontSize="28" fontWeight="bold" fill="#171717">65%</text>
+                <text x="50%" y="67%" textAnchor="middle" fontSize="12" fill="#888"></text>
               </svg>
-            </div>
-            <div className="w-full flex flex-col items-center gap-1">
-              <span className="text-lg font-bold">1위</span>
-              <span className="text-lg font-bold">2위</span>
-              <span className="text-lg font-bold">3위</span>
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-lg font-bold">1위</span>
+                <span className="text-lg font-bold">2위</span>
+                <span className="text-lg font-bold">3위</span>
+              </div>
             </div>
           </div>
           {/* Survey Shop */}
           <div className="bg-white rounded-2xl shadow-lg w-80 p-8 flex flex-col items-center">
             <h3 className="text-xl font-bold mb-2">SURVEY SHOP</h3>
-            <p className="text-gray-400 text-sm mb-12">Customers that buy products</p>
-            <div className="flex items-center justify-center">
+            <p className="text-gray-400 text-sm mb-8">Customers that buy products</p>
+            <div className="flex items-center justify-center pb-4">
               <Image src="/3d_coin.png" alt="Survey Shop" width={150} height={150} />
             </div>
           </div>
