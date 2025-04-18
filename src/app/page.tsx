@@ -1,103 +1,155 @@
-import Image from "next/image";
+import React from "react";
+import { FaHome, FaQuestionCircle, FaChartBar, FaListAlt, FaUser, FaRegLifeRing } from "react-icons/fa";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+    <div className="flex min-h-screen bg-[#f7f9fb]">
+      {/* Sidebar */}
+      <aside className="w-64 bg-white shadow-lg flex flex-col justify-between py-8 px-6 min-h-screen">
+        <div>
+          {/* Logo */}
+          <div className="flex items-center gap-2 mb-8">
+            <span className="font-bold text-xl">SURVEY</span>
+            <span className="text-xs text-gray-400">v0.1</span>
+          </div>
+          {/* Nav */}
+          <nav className="flex flex-col gap-2">
+            <NavItem icon={<FaHome />} label="HOME" active />
+            <NavItem icon={<FaQuestionCircle />} label="질문 등록하기" />
+            <NavItem icon={<FaChartBar />} label="결과 보기" />
+            <NavItem icon={<FaListAlt />} label="나의 설문" />
+            <NavItem icon={<FaUser />} label="내 정보" />
+            <NavItem icon={<FaRegLifeRing />} label="Help" />
+          </nav>
+        </div>
+        {/* Survey CTA */}
+        <button className="bg-gradient-to-r from-purple-400 to-blue-400 text-white rounded-xl py-4 px-3 text-lg font-bold shadow-md flex flex-col items-center gap-1">
+          설문조사하고 <br /> 상품 받아가기
+          <span className="mt-1 bg-white text-blue-500 rounded px-3 py-1 text-xs font-bold">Get it Now!</span>
+        </button>
+      </aside>
+      {/* Main Content */}
+      <main className="flex-1 p-10 flex flex-col gap-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex gap-3">
+            <button className="bg-gray-200 rounded px-4 py-2 font-semibold">Sign in</button>
+            <button className="bg-[#7b61ff] text-white rounded px-4 py-2 font-semibold">Register</button>
+          </div>
+          <div className="relative">
+            <input className="bg-gray-100 rounded-full px-4 py-2 pl-10 w-64 focus:outline-none" placeholder="Search" />
+            <svg className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          </div>
+        </div>
+        {/* Dashboard Cards */}
+        <div className="grid grid-cols-3 gap-6 mb-8">
+          <DashboardCard icon="💵" title="질문 등록" subtitle="Earning" value="37.8%" valueDesc="발언자 수 증가" valueColor="text-green-500" />
+          <DashboardCard icon="🧑‍💻" title="결과 보기" subtitle="Balance" value="250명" valueDesc="조사 완료" valueColor="text-red-500" />
+          <DashboardCard icon="🛍️" title="내 정보" subtitle="Total Sales" value="11%" valueDesc="this week" valueColor="text-green-500" />
+        </div>
+        {/* Main Dashboard Section */}
+        <div className="flex gap-8">
+          {/* Popular Survey Card */}
+          <div className="bg-white rounded-2xl shadow-lg flex-1 p-8 flex flex-col items-center">
+            <h2 className="text-2xl font-bold mb-2">지금 가장 인기있는 설문 조사?</h2>
+            <p className="text-gray-500 mb-4">홍대생이 뽑은 맛집 순위</p>
+            {/* Chart Placeholder */}
+            <div className="flex flex-col items-center mb-4">
+              <svg width="120" height="120" className="mb-2">
+                <circle cx="60" cy="60" r="54" fill="#f3f3f3" />
+                <path d="M60 6 a54 54 0 1 1 -38.18 92.18" fill="none" stroke="#e97ad9" strokeWidth="12" />
+                <text x="50%" y="54%" textAnchor="middle" fontSize="28" fontWeight="bold" fill="#171717">65%</text>
+                <text x="50%" y="67%" textAnchor="middle" fontSize="12" fill="#888">Total New\nCustomers</text>
+              </svg>
+            </div>
+            <div className="w-full flex flex-col items-center gap-1">
+              <span className="text-lg font-bold">1위</span>
+              <span className="text-lg font-bold">2위</span>
+              <span className="text-lg font-bold">3위</span>
+            </div>
+          </div>
+          {/* Survey Shop */}
+          <div className="bg-white rounded-2xl shadow-lg w-80 p-8 flex flex-col items-center">
+            <h3 className="text-xl font-bold mb-2">SURVEY SHOP</h3>
+            <p className="text-gray-400 text-sm mb-4">Customers that buy products</p>
+            <div className="flex items-center justify-center">
+              <MdOutlineShoppingCart className="text-7xl text-purple-400" />
+            </div>
+          </div>
+        </div>
+        {/* Survey List */}
+        <div className="bg-white rounded-2xl shadow-lg mt-8 p-8">
+          <h4 className="text-xl font-bold mb-4">당신의 관심사에 맞는 설문 조사</h4>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-gray-400">순위</span>
+            <div className="flex gap-2">
+              <input className="bg-gray-100 rounded px-3 py-1 text-sm" placeholder="Search" />
+              <select className="bg-gray-100 rounded px-3 py-1 text-sm">
+                <option>마감 전</option>
+              </select>
+            </div>
+          </div>
+          <div className="divide-y">
+            <SurveyListItem 
+              title="파인애플 피자의 선호도"
+              id="New hong ik"
+              date="2025-04-18"
+              reward="스타벅스 10장"
+              participants={925}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <SurveyListItem 
+              title="생일 선물로 가장 받고 싶은 기프티콘"
+              id="Jung sung aha"
+              date="2025-05-16"
+              reward="$ 45.99"
+              participants={375}
+            />
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+    </div>
+  );
+}
+
+function NavItem({ icon, label, active = false }: { icon: React.ReactNode; label: string; active?: boolean }) {
+  return (
+    <div className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer font-semibold text-base transition-colors ${active ? "bg-[#7b61ff] text-white" : "text-gray-700 hover:bg-gray-100"}`}>
+      <span className="text-lg">{icon}</span>
+      <span>{label}</span>
+    </div>
+  );
+}
+
+function DashboardCard({ icon, title, subtitle, value, valueDesc, valueColor }: { icon: string; title: string; subtitle: string; value: string; valueDesc: string; valueColor: string }) {
+  return (
+    <div className="bg-white rounded-2xl shadow-lg flex flex-col items-center py-8 px-6">
+      <div className="text-4xl mb-2">{icon}</div>
+      <div className="text-gray-400 text-xs mb-1">{subtitle}</div>
+      <div className="text-xl font-bold mb-1">{title}</div>
+      <div className={`text-2xl font-bold ${valueColor}`}>{value}</div>
+      <div className="text-gray-400 text-xs">{valueDesc}</div>
+    </div>
+  );
+}
+
+function SurveyListItem({ title, id, date, reward, participants }: { title: string; id: string; date: string; reward: string; participants: number }) {
+  return (
+    <div className="flex items-center justify-between py-4">
+      <div className="flex items-center gap-4">
+        <div className="w-16 h-16 rounded-xl bg-gradient-to-tr from-blue-400 to-purple-300 flex items-center justify-center">
+          <svg width="40" height="40"><circle cx="20" cy="20" r="18" fill="#fff" /></svg>
+        </div>
+        <div>
+          <div className="font-bold text-base mb-1">{title}</div>
+          <div className="text-xs text-gray-400">등록인 ID: {id}</div>
+        </div>
+      </div>
+      <div className="flex items-center gap-8">
+        <div className="text-sm text-gray-400">{date}</div>
+        <div className="text-sm font-bold text-blue-500">{reward}</div>
+        <div className="text-sm text-gray-400">{participants}</div>
+      </div>
     </div>
   );
 }
