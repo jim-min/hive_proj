@@ -1,6 +1,6 @@
 import React from "react";
 import { FaHome, FaQuestionCircle, FaChartBar, FaListAlt, FaUser, FaRegLifeRing } from "react-icons/fa";
-import { MdOutlineShoppingCart } from "react-icons/md";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -72,9 +72,9 @@ export default function Home() {
           {/* Survey Shop */}
           <div className="bg-white rounded-2xl shadow-lg w-80 p-8 flex flex-col items-center">
             <h3 className="text-xl font-bold mb-2">SURVEY SHOP</h3>
-            <p className="text-gray-400 text-sm mb-4">Customers that buy products</p>
+            <p className="text-gray-400 text-sm mb-12">Customers that buy products</p>
             <div className="flex items-center justify-center">
-              <MdOutlineShoppingCart className="text-7xl text-purple-400" />
+              <Image src="/3d_coin.png" alt="Survey Shop" width={150} height={150} />
             </div>
           </div>
         </div>
