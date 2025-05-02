@@ -113,7 +113,7 @@ export default function Home() {
 
 
 
-function DashboardCard({ icon, title, subtitle, value, valueDesc, valueColor }: { icon: string; title: string; subtitle: string; value: string; valueDesc: string; valueColor: string }) {
+function DashboardCard({ icon, title, subtitle, value, valueDesc, valueColor }: { icon: React.ReactNode; title: string; subtitle: string; value: string; valueDesc: string; valueColor: string }) {
   return (
     <div className="bg-white rounded-2xl shadow-lg flex flex-col items-center py-8 px-6">
       <div className="text-4xl mb-2">{icon}</div>
@@ -130,7 +130,7 @@ function SurveyListItem({ title, id, date, reward, participants, image }: { titl
     <div className="flex items-center justify-between py-4">
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center">
-          <img src={image} alt="survey" className="object-cover w-full h-full" />
+          <Image src={image} alt="survey" width={100} height={100} />
         </div>
         <div>
           <div className="font-bold text-base mb-1">{title}</div>

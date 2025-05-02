@@ -4,7 +4,6 @@ import { usePathname, useRouter } from "next/navigation";
 
 export const Sidebar = () => {
   const pathname = usePathname();
-  const router = useRouter();
   // 각 NavItem의 경로 정의
   const navItems = [
     { icon: <FaHome />, label: "HOME", path: "/" },
