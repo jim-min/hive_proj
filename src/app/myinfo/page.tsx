@@ -1,11 +1,13 @@
 import React from "react";
+import DonutChart from "@/components/DonutChart";
 import Image from "next/image";
+import { Sidebar } from "@/components/Sidebar";
 
 export default function MyInfo() {
   return (
     <div className="flex min-h-screen bg-[#f7f9fb]">
       {/* Sidebar placeholder (reuse layout/sidebar in real app) */}
-      <aside className="hidden md:flex w-64 bg-white shadow-lg flex-col justify-between py-8 px-6 min-h-screen"></aside>
+      <Sidebar />
       <main className="flex-1 w-full max-w-full p-4 md:p-8 flex flex-col gap-8 overflow-x-hidden">
         {/* 내정보 카드 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -44,7 +46,7 @@ export default function MyInfo() {
           </div>
           <div className="flex flex-col md:flex-row gap-8">
             <div className="flex-1 flex flex-col items-center">
-              <Image src="/piechart_sample.png" alt="pie chart" width={200} height={200} />
+              <DonutChart value={65} />
             </div>
             <div className="flex-1 flex flex-col justify-center">
               <div className="font-bold mb-2">결과 해석:</div>
