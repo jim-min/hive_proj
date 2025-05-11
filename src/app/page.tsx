@@ -10,8 +10,8 @@ const initialThreads = [
     date: "2024-08-23",
     poll: {
       question: "투표기능 이건가",
-      options: ["혹시???"],
-      votes: [1],
+      options: ["맞나요??", "아니요"],
+      votes: [1, 0],
       ended: true,
     },
     comments: [
@@ -30,12 +30,12 @@ const initialThreads = [
   // 추가 Thread 예시
   {
     id: 2,
-    author: "user2",
+    author: "hungryguy2",
     date: "2024-08-24",
     poll: {
-      question: "다음 투표는?",
-      options: ["네", "아니오"],
-      votes: [0, 0],
+      question: "오늘 저녁 뭐 먹을까?",
+      options: ["피자", "치즈볼", "볶음밥"],
+      votes: [0, 0, 0],
       ended: false,
     },
     comments: [],
@@ -356,12 +356,12 @@ export default function Page() {
         ))}
       </div>
       {/* Footer 네비게이션 바 */}
-      <footer className="fixed bottom-0 left-0 w-full h-16 bg-gradient-to-r from-gray-100 to-gray-200 flex justify-around items-center border-t z-50">
+      <footer className="fixed bottom-0 left-0 w-full h-16 bg-[#5932EA] flex justify-around items-center z-50">
         <AiFillHome size={28} className="text-black" />
-        <AiOutlineSearch size={28} className="text-gray-400" />
-        <AiOutlineEdit size={28} className="text-gray-400" />
-        <AiOutlineHeart size={28} className="text-gray-400" />
-        <AiOutlineUser size={28} className="text-gray-400" />
+        <AiOutlineSearch size={28} className="text-white" />
+        <AiOutlineEdit size={28} className="text-white" />
+        <AiOutlineHeart size={28} className="text-white" />
+        <AiOutlineUser size={28} className="text-white" />
       </footer>
     </main>
   );
