@@ -52,8 +52,25 @@ const initialThreads = [
 const tokenThreads = [
   {
     id: 999,
+    author: "Samsun",
+    date: "2025-05-22",
+    poll: {
+      question: "최근 아이폰에서 가장 마음에 들지 않았던 기능은?",
+      options: ["지문 인식 부재", "디자인", "카메라"],
+      votes: [0, 0, 0],
+      ended: false,
+    },
+    image: "/iphone.png",
+    profileImage: "/samsun.png",
+    comments: [],
+    likes: 0,
+    reposts: 0,
+    shares: 0,
+  },
+  {
+    id: 1000,
     author: "TokenBot",
-    date: new Date().toISOString().split('T')[0],
+    date: "2025-05-20",
     poll: {
       question: "비즈니스 투표를 통해 토큰을 얻어보세요!",
       options: ["토큰 획득", "싫어요"],
@@ -92,6 +109,8 @@ interface ThreadType {
   likes: number;
   reposts: number;
   shares: number;
+  image?: string;
+  profileImage?: string;
 }
 
 // 프로필 이미지 경로
@@ -121,12 +140,16 @@ function Thread({
   return (
     <div className={`rounded-xl shadow p-4 mb-6 w-full max-w-xl mx-auto ${isBusiness ? 'bg-purple-50' : 'bg-white'}`}>
       <div className="flex items-center mb-2">
-        <img src={PROFILE_IMG} alt="profile" className="w-8 h-8 rounded-full mr-2 bg-gray-200" />
+        <img src={thread.profileImage || PROFILE_IMG} alt="profile" className="w-8 h-8 rounded-full mr-2 bg-gray-200" />
         <div>
           <span className="font-bold">{thread.author}</span>
           <span className="text-xs text-gray-400 ml-2">{thread.date}</span>
         </div>
       </div>
+      {/* 이미지 */}
+      {thread.image && (
+        <img src={thread.image} alt="thread-image" className="w-full h-48 object-cover rounded-lg mb-2" />
+      )}
       {/* 투표 */}
       <div className="mb-2">
         <div className="font-semibold mb-1">{thread.poll.question}</div>
@@ -353,6 +376,7 @@ export default function Page() {
                 alt="token-img" 
                 width={120} 
                 height={120}
+                unoptimized
                 className="rounded-lg w-24 h-24 md:w-48 md:h-48"
               />
             </div>
