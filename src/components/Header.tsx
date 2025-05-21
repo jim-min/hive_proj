@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({ themeMode, onThemeChange, token }) => {
     onThemeChange(mode);
   };
   return (
-    <header className={`flex items-center justify-between px-8 h-16 ${themeMode === 'token' ? 'bg-[#FFD13A]' : 'bg-[#5932EA]'} shadow-sm sticky top-0 z-50 transition-colors duration-300`}>
+    <header className={`flex items-center justify-between px-0 h-16 ${themeMode === 'token' ? 'bg-[#FFD13A]' : 'bg-[#5932EA]'} shadow-sm sticky top-0 z-50 transition-colors duration-300`}>
       {/* Logo (left) */}
       <div className="flex-1 flex items-center">
         <span className="font-bold text-2xl text-white">
@@ -47,7 +47,7 @@ const Header: React.FC<HeaderProps> = ({ themeMode, onThemeChange, token }) => {
         </button>
       </div>
       {/* Token info */}
-      <div className={`transition-opacity duration-300 ${themeMode === 'token' ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`transition-opacity duration-300 px-4 ${themeMode === 'token' ? 'opacity-100' : 'opacity-0'}`}>
         {themeMode === 'token' && <TokenInfo token={token} />}
       </div>
     </header>
