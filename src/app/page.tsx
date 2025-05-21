@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
-import { AiFillHome, AiOutlineSearch, AiOutlineEdit, AiOutlineHeart, AiOutlineUser, AiOutlineLike, AiOutlineComment, AiOutlineRetweet, AiOutlineShareAlt } from "react-icons/ai";
-import Link from "next/link";
+import React, { useState, useEffect } from "react";
+import { AiOutlineLike, AiOutlineComment, AiOutlineRetweet, AiOutlineShareAlt } from "react-icons/ai";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 // 투표 항목 타입
 const initialThreads = [
@@ -291,6 +291,20 @@ export default function Page() {
     if (newOptions.length > 2) setNewOptions((opts) => opts.filter((_, i) => i !== idx));
   };
 
+  const [themeMode, setThemeMode] = useState<'default' | 'token'>('default');
+
+  useEffect(() => {
+    const handleThemeChange = (e: Event) => {
+      const customEvent = e as CustomEvent<{ mode: 'default' | 'token' }>;
+      setThemeMode(customEvent.detail.mode);
+    };
+
+    window.addEventListener('themeChange', handleThemeChange as EventListener);
+    return () => {
+      window.removeEventListener('themeChange', handleThemeChange as EventListener);
+    };
+  }, []);
+
   return (
     <>
       <Header />
@@ -360,17 +374,7 @@ export default function Page() {
           ))}
         </div>
         {/* Footer 네비게이션 바 */}
-        <footer className="fixed bottom-0 left-0 w-full h-16 bg-[#5932EA] flex justify-around items-center z-50">
-          <Link href="/">
-            <AiFillHome size={28} className="text-white" />
-          </Link>
-          <Link href="/search">
-            <AiOutlineSearch size={28} className="text-white" />
-          </Link>
-          <AiOutlineEdit size={28} className="text-white" />
-          <AiOutlineHeart size={28} className="text-white" />
-          <AiOutlineUser size={28} className="text-white" />
-        </footer>
+        <Footer themeMode={themeMode} />
       </main>
     </>
   );
