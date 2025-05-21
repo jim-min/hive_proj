@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { AiFillHome, AiOutlineSearch, AiOutlineEdit, AiOutlineHeart, AiOutlineUser, AiOutlineLike, AiOutlineComment, AiOutlineRetweet, AiOutlineShareAlt } from "react-icons/ai";
 import Link from "next/link";
+import Header from "@/components/Header";
 
 // 투표 항목 타입
 const initialThreads = [
@@ -291,83 +292,86 @@ export default function Page() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 pb-20 py-8">
-      {/* 새 투표 시작 폼 */}
-      <div className="w-full max-w-xl mx-auto bg-white rounded-xl shadow p-4 mb-8">
-        <div className="font-bold text-lg mb-2">새 투표 시작</div>
-        <textarea
-          value={newQuestion}
-          onChange={(e) => setNewQuestion(e.target.value)}
-          placeholder="질문을 입력하세요..."
-          className="w-full border rounded px-3 py-2 mb-3 min-h-[60px] resize-none"
-        />
-        <div className="flex flex-col gap-2 mb-3">
-          {newOptions.map((opt, idx) => (
-            <div key={idx} className="flex items-center gap-2">
-              <input
-                type="text"
-                value={opt}
-                onChange={(e) => handleOptionChange(idx, e.target.value)}
-                placeholder={`옵션 ${idx + 1}`}
-                className="flex-1 border rounded px-2 py-1"
-              />
-              {newOptions.length > 2 && (
-                <button
-                  onClick={() => handleRemoveOption(idx)}
-                  className="text-red-400 px-2 py-1"
-                  type="button"
-                >
-                  삭제
-                </button>
-              )}
-            </div>
+    <>
+      <Header />
+      <main className="min-h-screen bg-gray-50 pb-20 py-8">
+        {/* 새 투표 시작 폼 */}
+        <div className="w-full max-w-xl mx-auto bg-white rounded-xl shadow p-4 mb-8">
+          <div className="font-bold text-lg mb-2">새 투표 시작</div>
+          <textarea
+            value={newQuestion}
+            onChange={(e) => setNewQuestion(e.target.value)}
+            placeholder="질문을 입력하세요..."
+            className="w-full border rounded px-3 py-2 mb-3 min-h-[60px] resize-none"
+          />
+          <div className="flex flex-col gap-2 mb-3">
+            {newOptions.map((opt, idx) => (
+              <div key={idx} className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={opt}
+                  onChange={(e) => handleOptionChange(idx, e.target.value)}
+                  placeholder={`옵션 ${idx + 1}`}
+                  className="flex-1 border rounded px-2 py-1"
+                />
+                {newOptions.length > 2 && (
+                  <button
+                    onClick={() => handleRemoveOption(idx)}
+                    className="text-red-400 px-2 py-1"
+                    type="button"
+                  >
+                    삭제
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={handleAddOption}
+              disabled={newOptions.length >= 4}
+              className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50 cursor-pointer"
+              type="button"
+            >
+              옵션 추가
+            </button>
+            <button
+              onClick={handleCreatePoll}
+              disabled={!newQuestion.trim() || newOptions.some((opt) => !opt.trim())}
+              className="px-4 py-1 bg-blue-500 text-white rounded disabled:bg-gray-300 cursor-pointer"
+              type="button"
+            >
+              투표 생성
+            </button>
+          </div>
+        </div>
+        {/* 기존 Thread 리스트 */}
+        <div className="flex flex-col items-center">
+          {threads.map((thread) => (
+            <Thread
+              key={thread.id}
+              thread={thread}
+              onVote={handleVote}
+              onLike={handleLike}
+              onRepost={handleRepost}
+              onShare={handleShare}
+              onComment={handleComment}
+            />
           ))}
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={handleAddOption}
-            disabled={newOptions.length >= 4}
-            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50 cursor-pointer"
-            type="button"
-          >
-            옵션 추가
-          </button>
-          <button
-            onClick={handleCreatePoll}
-            disabled={!newQuestion.trim() || newOptions.some((opt) => !opt.trim())}
-            className="px-4 py-1 bg-blue-500 text-white rounded disabled:bg-gray-300 cursor-pointer"
-            type="button"
-          >
-            투표 생성
-          </button>
-        </div>
-      </div>
-      {/* 기존 Thread 리스트 */}
-      <div className="flex flex-col items-center">
-        {threads.map((thread) => (
-          <Thread
-            key={thread.id}
-            thread={thread}
-            onVote={handleVote}
-            onLike={handleLike}
-            onRepost={handleRepost}
-            onShare={handleShare}
-            onComment={handleComment}
-          />
-        ))}
-      </div>
-      {/* Footer 네비게이션 바 */}
-      <footer className="fixed bottom-0 left-0 w-full h-16 bg-[#5932EA] flex justify-around items-center z-50">
-        <Link href="/">
-          <AiFillHome size={28} className="text-white" />
-        </Link>
-        <Link href="/search">
-          <AiOutlineSearch size={28} className="text-white" />
-        </Link>
-        <AiOutlineEdit size={28} className="text-white" />
-        <AiOutlineHeart size={28} className="text-white" />
-        <AiOutlineUser size={28} className="text-white" />
-      </footer>
-    </main>
+        {/* Footer 네비게이션 바 */}
+        <footer className="fixed bottom-0 left-0 w-full h-16 bg-[#5932EA] flex justify-around items-center z-50">
+          <Link href="/">
+            <AiFillHome size={28} className="text-white" />
+          </Link>
+          <Link href="/search">
+            <AiOutlineSearch size={28} className="text-white" />
+          </Link>
+          <AiOutlineEdit size={28} className="text-white" />
+          <AiOutlineHeart size={28} className="text-white" />
+          <AiOutlineUser size={28} className="text-white" />
+        </footer>
+      </main>
+    </>
   );
 }
