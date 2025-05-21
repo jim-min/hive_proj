@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { AiFillHome, AiOutlineSearch, AiOutlineEdit, AiOutlineHeart, AiOutlineUser } from "react-icons/ai";
 import Link from "next/link";
 

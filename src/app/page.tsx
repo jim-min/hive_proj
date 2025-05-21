@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { AiOutlineLike, AiOutlineComment, AiOutlineRetweet, AiOutlineShareAlt } from "react-icons/ai";
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -47,6 +48,25 @@ const initialThreads = [
   },
 ];
 
+// 토큰 모드에서만 보여줄 스레드 데이터
+const tokenThreads = [
+  {
+    id: 999,
+    author: "TokenBot",
+    date: new Date().toISOString().split('T')[0],
+    poll: {
+      question: "비즈니스 투표를 통해 토큰을 얻어보세요!",
+      options: ["토큰 획득", "싫어요"],
+      votes: [0, 0],
+      ended: false,
+    },
+    comments: [],
+    likes: 0,
+    reposts: 0,
+    shares: 0,
+  }
+];
+
 // 타입 정의
 interface Poll {
   question: string;
@@ -80,6 +100,7 @@ const COMMENT_IMG = "/yes.jpg"; // public 폴더에 comment-img.svg 있다고 �
 
 function Thread({
   thread,
+  isBusiness,
   onVote,
   onLike,
   onRepost,
@@ -87,6 +108,7 @@ function Thread({
   onComment,
 }: {
   thread: ThreadType;
+  isBusiness: boolean;
   onVote: (threadId: number, optionIdx: number) => void;
   onLike: (threadId: number) => void;
   onRepost: (threadId: number) => void;
@@ -97,7 +119,7 @@ function Thread({
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <div className="bg-white rounded-xl shadow p-4 mb-6 w-full max-w-xl mx-auto">
+    <div className={`rounded-xl shadow p-4 mb-6 w-full max-w-xl mx-auto ${isBusiness ? 'bg-purple-50' : 'bg-white'}`}>
       <div className="flex items-center mb-2">
         <img src={PROFILE_IMG} alt="profile" className="w-8 h-8 rounded-full mr-2 bg-gray-200" />
         <div>
@@ -195,66 +217,93 @@ function Thread({
 
 export default function Page() {
   const [threads, setThreads] = useState<ThreadType[]>(initialThreads);
+  const [businessThreads, setBusinessThreads] = useState<ThreadType[]>(tokenThreads);
+  const [token, setToken] = useState(100);
+  const [showTokenNotification, setShowTokenNotification] = useState(false);
 
   // 새 투표 폼 상태
   const [newQuestion, setNewQuestion] = useState("");
   const [newOptions, setNewOptions] = useState(["", ""]);
 
+  // 스레드 업데이트 유틸리티 함수
+  const updateThread = (threads: ThreadType[], threadId: number, updater: (thread: ThreadType) => ThreadType) => {
+    return threads.map(t => t.id === threadId ? updater(t) : t);
+  };
+
   // 투표
-  const handleVote = (threadId: number, optionIdx: number) => {
-    setThreads((prev) =>
-      prev.map((t) =>
-        t.id === threadId
-          ? {
-              ...t,
-              poll: {
-                ...t.poll,
-                votes: t.poll.votes.map((v, i) => (i === optionIdx ? v + 1 : v)),
-              },
-            }
-          : t
-      )
-    );
+  const handleVote = (threadId: number, optionIdx: number, isBusiness = false) => {
+    const updater = (t: ThreadType) => ({
+      ...t,
+      poll: {
+        ...t.poll,
+        votes: t.poll.votes.map((v, i) => (i === optionIdx ? v + 1 : v)),
+      },
+    });
+    
+    if (isBusiness) {
+      setBusinessThreads(prev => updateThread(prev, threadId, updater));
+      setToken(prev => prev + 50);
+      setShowTokenNotification(true);
+      setTimeout(() => setShowTokenNotification(false), 3000);
+    } else {
+      setThreads(prev => updateThread(prev, threadId, updater));
+    }
   };
+
   // 좋아요
-  const handleLike = (threadId: number) => {
-    setThreads((prev) =>
-      prev.map((t) => (t.id === threadId ? { ...t, likes: t.likes + 1 } : t))
-    );
+  const handleLike = (threadId: number, isBusiness = false) => {
+    const updater = (t: ThreadType) => ({ ...t, likes: t.likes + 1 });
+    
+    if (isBusiness) {
+      setBusinessThreads(prev => updateThread(prev, threadId, updater));
+    } else {
+      setThreads(prev => updateThread(prev, threadId, updater));
+    }
   };
+
   // 리포스트
-  const handleRepost = (threadId: number) => {
-    setThreads((prev) =>
-      prev.map((t) => (t.id === threadId ? { ...t, reposts: t.reposts + 1 } : t))
-    );
+  const handleRepost = (threadId: number, isBusiness = false) => {
+    const updater = (t: ThreadType) => ({ ...t, reposts: t.reposts + 1 });
+    
+    if (isBusiness) {
+      setBusinessThreads(prev => updateThread(prev, threadId, updater));
+    } else {
+      setThreads(prev => updateThread(prev, threadId, updater));
+    }
   };
+
   // 공유
-  const handleShare = (threadId: number) => {
-    setThreads((prev) =>
-      prev.map((t) => (t.id === threadId ? { ...t, shares: t.shares + 1 } : t))
-    );
+  const handleShare = (threadId: number, isBusiness = false) => {
+    const updater = (t: ThreadType) => ({ ...t, shares: t.shares + 1 });
+    
+    if (isBusiness) {
+      setBusinessThreads(prev => updateThread(prev, threadId, updater));
+    } else {
+      setThreads(prev => updateThread(prev, threadId, updater));
+    }
   };
+
   // 댓글
-  const handleComment = (threadId: number, text: string) => {
+  const handleComment = (threadId: number, text: string, isBusiness = false) => {
     if (!text.trim()) return;
-    setThreads((prev) =>
-      prev.map((t) =>
-        t.id === threadId
-          ? {
-              ...t,
-              comments: [
-                ...t.comments,
-                {
-                  id: Date.now(),
-                  author: "me",
-                  date: new Date().toISOString().slice(0, 10),
-                  text,
-                },
-              ],
-            }
-          : t
-      )
-    );
+    
+    const newComment = {
+      id: Date.now(),
+      author: "현재사용자",
+      date: new Date().toISOString().split("T")[0],
+      text,
+    };
+
+    const updater = (t: ThreadType) => ({
+      ...t,
+      comments: [...t.comments, newComment],
+    });
+    
+    if (isBusiness) {
+      setBusinessThreads(prev => updateThread(prev, threadId, updater));
+    } else {
+      setThreads(prev => updateThread(prev, threadId, updater));
+    }
   };
 
   // 새 투표 생성
@@ -293,86 +342,117 @@ export default function Page() {
 
   const [themeMode, setThemeMode] = useState<'default' | 'token'>('default');
 
-  useEffect(() => {
-    const handleThemeChange = (e: Event) => {
-      const customEvent = e as CustomEvent<{ mode: 'default' | 'token' }>;
-      setThemeMode(customEvent.detail.mode);
-    };
-
-    window.addEventListener('themeChange', handleThemeChange as EventListener);
-    return () => {
-      window.removeEventListener('themeChange', handleThemeChange as EventListener);
-    };
-  }, []);
-
   return (
     <>
-      <Header />
+      {showTokenNotification && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50">
+          <div className="flex flex-col items-center justify-between bg-white p-8 rounded-2xl shadow-md text-center h-96 w-100">
+            <div className="flex justify-center mb-4">
+              <Image 
+                src="/grats.gif" 
+                alt="token-img" 
+                width={200} 
+                height={200}
+                className="rounded-lg"
+              />
+            </div>
+            <div className="text-2xl font-bold text-gray-800 mb-4">
+              축하합니다! <br />50 토큰을 획득하셨습니다!
+            </div>
+          </div>
+        </div>
+      )}
+      <Header 
+        themeMode={themeMode} 
+        onThemeChange={(mode) => setThemeMode(mode)} 
+        token={token}
+      />
       <main className="min-h-screen bg-gray-50 pb-20 py-8">
-        {/* 새 투표 시작 폼 */}
-        <div className="w-full max-w-xl mx-auto bg-white rounded-xl shadow p-4 mb-8">
-          <div className="font-bold text-lg mb-2">새 투표 시작</div>
-          <textarea
-            value={newQuestion}
-            onChange={(e) => setNewQuestion(e.target.value)}
-            placeholder="질문을 입력하세요..."
-            className="w-full border rounded px-3 py-2 mb-3 min-h-[60px] resize-none"
-          />
-          <div className="flex flex-col gap-2 mb-3">
-            {newOptions.map((opt, idx) => (
-              <div key={idx} className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={opt}
-                  onChange={(e) => handleOptionChange(idx, e.target.value)}
-                  placeholder={`옵션 ${idx + 1}`}
-                  className="flex-1 border rounded px-2 py-1"
-                />
-                {newOptions.length > 2 && (
-                  <button
-                    onClick={() => handleRemoveOption(idx)}
-                    className="text-red-400 px-2 py-1"
-                    type="button"
-                  >
-                    삭제
-                  </button>
-                )}
+        {themeMode === 'default' ? (
+          <>
+            {/* 기본 모드: 투표 폼과 일반 스레드 */}
+            <div className="w-full max-w-xl mx-auto bg-white rounded-xl shadow p-4 mb-8">
+              <div className="font-bold text-lg mb-2">새 투표 시작</div>
+              <textarea
+                value={newQuestion}
+                onChange={(e) => setNewQuestion(e.target.value)}
+                placeholder="질문을 입력하세요..."
+                className="w-full border rounded px-3 py-2 mb-3 min-h-[60px] resize-none"
+              />
+              <div className="flex flex-col gap-2 mb-3">
+                {newOptions.map((opt, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={opt}
+                      onChange={(e) => handleOptionChange(idx, e.target.value)}
+                      placeholder={`옵션 ${idx + 1}`}
+                      className="flex-1 border rounded px-2 py-1"
+                    />
+                    {newOptions.length > 2 && (
+                      <button
+                        onClick={() => handleRemoveOption(idx)}
+                        className="text-red-400 px-2 py-1"
+                        type="button"
+                      >
+                        삭제
+                      </button>
+                    )}
+                  </div>
+                ))}
               </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleAddOption}
+                  disabled={newOptions.length >= 4}
+                  className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50 cursor-pointer"
+                  type="button"
+                >
+                  옵션 추가
+                </button>
+                <button
+                  onClick={handleCreatePoll}
+                  disabled={!newQuestion.trim() || newOptions.some((opt) => !opt.trim())}
+                  className="px-4 py-1 bg-blue-500 text-white rounded disabled:bg-gray-300 cursor-pointer"
+                  type="button"
+                >
+                  투표 생성
+                </button>
+              </div>
+            </div>
+            {/* 일반 스레드 리스트 */}
+            <div className="flex flex-col items-center">
+              {threads.map((thread) => (
+                <Thread
+                  key={thread.id}
+                  thread={thread}
+                  isBusiness={false}
+                  onVote={(id, idx) => handleVote(id, idx, false)}
+                  onLike={(id) => handleLike(id, false)}
+                  onRepost={(id) => handleRepost(id, false)}
+                  onShare={(id) => handleShare(id, false)}
+                  onComment={(id, text) => handleComment(id, text, false)}
+                />
+              ))}
+            </div>
+          </>
+        ) : (
+          // 토큰 모드: 토큰 전용 스레드만 표시
+          <div className="flex flex-col items-center">
+            {businessThreads.map((thread) => (
+              <Thread
+                key={thread.id}
+                thread={thread}
+                isBusiness={true}
+                onVote={(id, idx) => handleVote(id, idx, true)}
+                onLike={(id) => handleLike(id, true)}
+                onRepost={(id) => handleRepost(id, true)}
+                onShare={(id) => handleShare(id, true)}
+                onComment={(id, text) => handleComment(id, text, true)}
+              />
             ))}
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={handleAddOption}
-              disabled={newOptions.length >= 4}
-              className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50 cursor-pointer"
-              type="button"
-            >
-              옵션 추가
-            </button>
-            <button
-              onClick={handleCreatePoll}
-              disabled={!newQuestion.trim() || newOptions.some((opt) => !opt.trim())}
-              className="px-4 py-1 bg-blue-500 text-white rounded disabled:bg-gray-300 cursor-pointer"
-              type="button"
-            >
-              투표 생성
-            </button>
-          </div>
-        </div>
-        {/* 기존 Thread 리스트 */}
-        <div className="flex flex-col items-center">
-          {threads.map((thread) => (
-            <Thread
-              key={thread.id}
-              thread={thread}
-              onVote={handleVote}
-              onLike={handleLike}
-              onRepost={handleRepost}
-              onShare={handleShare}
-              onComment={handleComment}
-            />
-          ))}
-        </div>
+        )}
         {/* Footer 네비게이션 바 */}
         <Footer themeMode={themeMode} />
       </main>

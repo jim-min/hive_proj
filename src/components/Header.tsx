@@ -12,21 +12,22 @@ const TokenInfo = ({token} : {token: number}) => {
   )
 }
 
-const Header: React.FC = () => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>('default');
-  
+interface HeaderProps {
+  themeMode: 'default' | 'token';
+  onThemeChange: (mode: 'default' | 'token') => void;
+  token: number;
+}
+
+const Header: React.FC<HeaderProps> = ({ themeMode, onThemeChange, token }) => {
   const toggleThemeMode = (mode: ThemeMode) => {
-    setThemeMode(mode);
-    // 부모 컴포넌트에 테마 변경을 알림
-    const event = new CustomEvent('themeChange', { detail: { mode } });
-    window.dispatchEvent(event);
+    onThemeChange(mode);
   };
   return (
     <header className={`flex items-center justify-between px-8 h-16 ${themeMode === 'token' ? 'bg-yellow-500' : 'bg-[#5932EA]'} shadow-sm sticky top-0 z-50 transition-colors duration-300`}>
       {/* Logo (left) */}
       <div className="flex-1 flex items-center">
         <span className="font-bold text-2xl text-white">
-          HiveLogo
+          HAU
         </span>
       </div>
       {/* Center buttons */}
@@ -45,7 +46,7 @@ const Header: React.FC = () => {
         </button>
       </div>
       <div className={`transition-opacity duration-300 ${themeMode === 'token' ? 'opacity-100' : 'opacity-0'}`}>
-        {themeMode === 'token' && <TokenInfo token={100} />}
+        {themeMode === 'token' && <TokenInfo token={token} />}
       </div>
     </header>
   );
