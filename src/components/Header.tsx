@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { MdGeneratingTokens, MdOutlineMood } from "react-icons/md";
 
 type ThemeMode = 'default' | 'token';

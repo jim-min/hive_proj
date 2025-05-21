@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { AiOutlineLike, AiOutlineComment, AiOutlineRetweet, AiOutlineShareAlt } from "react-icons/ai";
 import Image from "next/image";
 import Header from "@/components/Header";
