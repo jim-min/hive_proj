@@ -9,7 +9,7 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({ themeMode }) => {
   return (
     <footer className={`fixed bottom-0 left-0 w-full h-16 ${
-      themeMode === 'token' ? 'bg-yellow-500' : 'bg-[#5932EA]'
+      themeMode === 'token' ? 'bg-[#FFD13A]' : 'bg-[#5932EA]'
     } flex justify-around items-center z-50 transition-colors duration-300`}>
       <Link href="/">
         <AiFillHome size={28} className="text-white" />
