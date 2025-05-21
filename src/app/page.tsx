@@ -346,17 +346,17 @@ export default function Page() {
     <>
       {showTokenNotification && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50">
-          <div className="flex flex-col items-center justify-between bg-white p-8 rounded-2xl shadow-md text-center h-96 w-100">
+          <div className="flex flex-col items-center justify-between bg-white p-8 rounded-2xl shadow-md text-center h-64 w-72 md:h-96 md:w-100">
             <div className="flex justify-center mb-4">
               <Image 
                 src="/grats.gif" 
                 alt="token-img" 
-                width={200} 
-                height={200}
-                className="rounded-lg"
+                width={120} 
+                height={120}
+                className="rounded-lg w-24 h-24 md:w-48 md:h-48"
               />
             </div>
-            <div className="text-2xl font-bold text-gray-800 mb-4">
+            <div className="text-md md:text-2xl font-bold text-gray-800 mb-4">
               축하합니다! <br />50 토큰을 획득하셨습니다!
             </div>
           </div>
